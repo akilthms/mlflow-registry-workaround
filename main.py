@@ -10,16 +10,17 @@ dbutils.fs.ls("/tmp/solacc/demand_forecast/train/train.csv")
 # COMMAND ----------
 
 # MAGIC %sql 
+# MAGIC CREATE DATABASE IF NOT EXISTS akthom.mlflow_registry_workaround;
 # MAGIC CREATE TABLE IF NOT EXISTS akthom.mlflow_registry_workaround.sales; 
 # MAGIC 
-# MAGIC COPY INTO akthom.mlflow_registry_workaround.sales;
+# MAGIC COPY INTO akthom.mlflow_registry_workaround.sales
 # MAGIC   FROM 'dbfs:/tmp/solacc/demand_forecast/train/train.csv'
 # MAGIC   FILEFORMAT = CSV
 # MAGIC   FORMAT_OPTIONS ('mergeSchema' = 'true',
 # MAGIC                   'header' = 'true')
 # MAGIC   COPY_OPTIONS ('mergeSchema' = 'true');
 # MAGIC 
-# MAGIC -- GRANT CREATE ON TABLE akthom.mlflow_registry_workaround.sales TO `peyman@databricks.com`;
+# MAGIC GRANT SELECT ON TABLE akthom.mlflow_registry_workaround.sales TO `peyman@databricks.com`;
 
 # COMMAND ----------
 
@@ -34,7 +35,7 @@ sql_statement = '''
     item,
     CAST(date as date) as ds,
     SUM(sales) as y
-  FROM train
+  FROM akthom.mlflow_registry_workaround.sales
   GROUP BY store, item, ds
   ORDER BY store, item, ds
   '''
@@ -44,6 +45,12 @@ store_item_history = (
     .sql( sql_statement )
     .repartition(sc.defaultParallelism, ['store', 'item'])
   ).cache()
+
+store_item_history.display()
+
+# COMMAND ----------
+
+
 
 # COMMAND ----------
 
