@@ -28,4 +28,4 @@ in a single file called index_file
   the bottleneck of databricks infrastructure limits when training scales massively
 ### Open Questions
 * Do we save the mlflow experiment as a single run or multiple runs?
-* 
+* What Databricks demo environment should we use?
