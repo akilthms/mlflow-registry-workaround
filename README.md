@@ -20,5 +20,12 @@ the location of where the model is stored.
 in a single file called index_file
 * 
 #### Akil
-* Set up demo notebook data
 * Set up git repo
+* Set up demo scenario from kaggle 
+* Get training data
+* Setup test of hitting api-limits
+  * This will be useful to showcase how this solution avoids 
+  the bottleneck of databricks infrastructure limits when training scales massively
+### Open Questions
+* Do we save the mlflow experiment as a single run or multiple runs?
+* 
