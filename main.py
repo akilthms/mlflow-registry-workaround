@@ -3,12 +3,6 @@
 
 # COMMAND ----------
 
-dbutils.fs.ls("/tmp/solacc/demand_forecast/train/train.csv")
-
-
-
-# COMMAND ----------
-
 # MAGIC %sql 
 # MAGIC CREATE DATABASE IF NOT EXISTS akthom.mlflow_registry_workaround;
 # MAGIC CREATE TABLE IF NOT EXISTS akthom.mlflow_registry_workaround.sales; 
@@ -20,6 +14,8 @@ dbutils.fs.ls("/tmp/solacc/demand_forecast/train/train.csv")
 # MAGIC                   'header' = 'true')
 # MAGIC   COPY_OPTIONS ('mergeSchema' = 'true');
 # MAGIC 
+# MAGIC --GRANT USE ON CATALOG akthom TO `peyman@databricks.com`;
+# MAGIC GRANT SELECT ON SCHEMA akthom.mlflow_registry_workaround TO `peyman@databricks.com`;
 # MAGIC GRANT SELECT ON TABLE akthom.mlflow_registry_workaround.sales TO `peyman@databricks.com`;
 
 # COMMAND ----------
@@ -47,10 +43,6 @@ store_item_history = (
   ).cache()
 
 store_item_history.display()
-
-# COMMAND ----------
-
-
 
 # COMMAND ----------
 
