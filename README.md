@@ -4,12 +4,18 @@
 
 
 1. Train the model in a pandas udf
-2. Write the model output to object store
+2. Write the model output to object store. Ensuring that any Python objects
+   ()
 3. Return a uri / location of the model output from the pandas udf
 4. Collect all uris in the driver node as an index file.
 5. Log the experiment run(s) post parallel training 
    1. As a single run? (if it is a single run I am assuming we log the index file with it?)
    2. Or multiple runs?
+
+### From Ben Wilson 
+2 & 3 -> Make sure you have a reference to the model 'name' or identifier to the uri but ensure that you're converting any Python objects (dicts, tuples, etc) to a string serialized representation since Arrow can't handle Objects.
+4 -> you don't have to collect them. If there are millions of them, you could write from the executors as parquet :slightly_smiling_face:
+5a. single run. Don't spam the create_run() API. And yep, log the index file as an artifact to the run. You can also log metrics / params for each model as a .csv if you're so inclined (that's what Diviner does)
 
 ### Separation of Duties
 #### Peyman
